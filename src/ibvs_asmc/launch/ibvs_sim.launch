@@ -1,0 +1,11 @@
+<launch>
+	
+	<!--node pkg="ibvs_asmc" type="cam_coord_node" name="aruco_detection_node" /-->
+	
+	<node pkg="ibvs_asmc" type="IBVS_uav_dynamics_node" name="ibvs_uav_dynamics" />
+	<node pkg="ibvs_asmc" type="cam_sim_node" name="camera_simulation_node" />
+	<node pkg="ibvs_asmc" type="asmc_feat_node" name="ibvs_features_node" output="screen" />
+	<node pkg="ibvs_asmc" type="IBVS_attitude_ctrl_node" name="ibvs_attitude_node"  />
+
+	
+</launch>
