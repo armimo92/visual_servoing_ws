@@ -246,7 +246,7 @@ gtest/preinstall: gtest/gtest/preinstall
 gtest/CMakeFiles/gmock.dir/all:
 	$(MAKE) -f gtest/CMakeFiles/gmock.dir/build.make gtest/CMakeFiles/gmock.dir/depend
 	$(MAKE) -f gtest/CMakeFiles/gmock.dir/build.make gtest/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=15,16,17 "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=17,18,19 "Built target gmock"
 .PHONY : gtest/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
@@ -278,7 +278,7 @@ clean: gtest/CMakeFiles/gmock.dir/clean
 gtest/CMakeFiles/gmock_main.dir/all:
 	$(MAKE) -f gtest/CMakeFiles/gmock_main.dir/build.make gtest/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) -f gtest/CMakeFiles/gmock_main.dir/build.make gtest/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=18,19,20,21 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=20,21,22,23 "Built target gmock_main"
 .PHONY : gtest/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -329,7 +329,7 @@ gtest/gtest/preinstall:
 gtest/gtest/CMakeFiles/gtest.dir/all:
 	$(MAKE) -f gtest/gtest/CMakeFiles/gtest.dir/build.make gtest/gtest/CMakeFiles/gtest.dir/depend
 	$(MAKE) -f gtest/gtest/CMakeFiles/gtest.dir/build.make gtest/gtest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=22,23 "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=24,25 "Built target gtest"
 .PHONY : gtest/gtest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -361,7 +361,7 @@ clean: gtest/gtest/CMakeFiles/gtest.dir/clean
 gtest/gtest/CMakeFiles/gtest_main.dir/all: gtest/gtest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/gtest/CMakeFiles/gtest_main.dir/build.make gtest/gtest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) -f gtest/gtest/CMakeFiles/gtest_main.dir/build.make gtest/gtest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=24,25 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=26,27 "Built target gtest_main"
 .PHONY : gtest/gtest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -391,6 +391,8 @@ clean: gtest/gtest/CMakeFiles/gtest_main.dir/clean
 
 # Convenience name for "all" pass in the directory.
 ibvs_asmc/all: ibvs_asmc/CMakeFiles/cam_sim_node.dir/all
+ibvs_asmc/all: ibvs_asmc/CMakeFiles/target_node.dir/all
+ibvs_asmc/all: ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/all
 ibvs_asmc/all: ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/all
 ibvs_asmc/all: ibvs_asmc/CMakeFiles/IBVS_uav_dynamics_node.dir/all
 ibvs_asmc/all: ibvs_asmc/CMakeFiles/IBVS_attitude_ctrl_node.dir/all
@@ -402,6 +404,8 @@ ibvs_asmc/all: ibvs_asmc/CMakeFiles/asmc_feat_node.dir/all
 
 # Convenience name for "clean" pass in the directory.
 ibvs_asmc/clean: ibvs_asmc/CMakeFiles/cam_sim_node.dir/clean
+ibvs_asmc/clean: ibvs_asmc/CMakeFiles/target_node.dir/clean
+ibvs_asmc/clean: ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/clean
 ibvs_asmc/clean: ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/clean
 ibvs_asmc/clean: ibvs_asmc/CMakeFiles/IBVS_uav_dynamics_node.dir/clean
 ibvs_asmc/clean: ibvs_asmc/CMakeFiles/IBVS_attitude_ctrl_node.dir/clean
@@ -478,7 +482,7 @@ ibvs_asmc/preinstall:
 ibvs_asmc/CMakeFiles/cam_sim_node.dir/all:
 	$(MAKE) -f ibvs_asmc/CMakeFiles/cam_sim_node.dir/build.make ibvs_asmc/CMakeFiles/cam_sim_node.dir/depend
 	$(MAKE) -f ibvs_asmc/CMakeFiles/cam_sim_node.dir/build.make ibvs_asmc/CMakeFiles/cam_sim_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=9,10 "Built target cam_sim_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=11,12 "Built target cam_sim_node"
 .PHONY : ibvs_asmc/CMakeFiles/cam_sim_node.dir/all
 
 # Include target in all.
@@ -509,13 +513,87 @@ clean: ibvs_asmc/CMakeFiles/cam_sim_node.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target ibvs_asmc/CMakeFiles/target_node.dir
+
+# All Build rule for target.
+ibvs_asmc/CMakeFiles/target_node.dir/all:
+	$(MAKE) -f ibvs_asmc/CMakeFiles/target_node.dir/build.make ibvs_asmc/CMakeFiles/target_node.dir/depend
+	$(MAKE) -f ibvs_asmc/CMakeFiles/target_node.dir/build.make ibvs_asmc/CMakeFiles/target_node.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=28,29 "Built target target_node"
+.PHONY : ibvs_asmc/CMakeFiles/target_node.dir/all
+
+# Include target in all.
+all: ibvs_asmc/CMakeFiles/target_node.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+ibvs_asmc/CMakeFiles/target_node.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/armando/visual_servoing_ws/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 ibvs_asmc/CMakeFiles/target_node.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/armando/visual_servoing_ws/build/CMakeFiles 0
+.PHONY : ibvs_asmc/CMakeFiles/target_node.dir/rule
+
+# Convenience name for target.
+target_node: ibvs_asmc/CMakeFiles/target_node.dir/rule
+
+.PHONY : target_node
+
+# clean rule for target.
+ibvs_asmc/CMakeFiles/target_node.dir/clean:
+	$(MAKE) -f ibvs_asmc/CMakeFiles/target_node.dir/build.make ibvs_asmc/CMakeFiles/target_node.dir/clean
+.PHONY : ibvs_asmc/CMakeFiles/target_node.dir/clean
+
+# clean rule for target.
+clean: ibvs_asmc/CMakeFiles/target_node.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target ibvs_asmc/CMakeFiles/aruco_broadcasting.dir
+
+# All Build rule for target.
+ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/all:
+	$(MAKE) -f ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/depend
+	$(MAKE) -f ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=5,6 "Built target aruco_broadcasting"
+.PHONY : ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/all
+
+# Include target in all.
+all: ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/armando/visual_servoing_ws/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/armando/visual_servoing_ws/build/CMakeFiles 0
+.PHONY : ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/rule
+
+# Convenience name for target.
+aruco_broadcasting: ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/rule
+
+.PHONY : aruco_broadcasting
+
+# clean rule for target.
+ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/clean:
+	$(MAKE) -f ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/clean
+.PHONY : ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/clean
+
+# clean rule for target.
+clean: ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir
 
 # All Build rule for target.
 ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/all:
 	$(MAKE) -f ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/depend
 	$(MAKE) -f ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=13,14 "Built target gazebo_broadcasting"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=15,16 "Built target gazebo_broadcasting"
 .PHONY : ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/all
 
 # Include target in all.
@@ -626,7 +704,7 @@ clean: ibvs_asmc/CMakeFiles/IBVS_attitude_ctrl_node.dir/clean
 ibvs_asmc/CMakeFiles/cam_coord_node.dir/all:
 	$(MAKE) -f ibvs_asmc/CMakeFiles/cam_coord_node.dir/build.make ibvs_asmc/CMakeFiles/cam_coord_node.dir/depend
 	$(MAKE) -f ibvs_asmc/CMakeFiles/cam_coord_node.dir/build.make ibvs_asmc/CMakeFiles/cam_coord_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=7,8 "Built target cam_coord_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=9,10 "Built target cam_coord_node"
 .PHONY : ibvs_asmc/CMakeFiles/cam_coord_node.dir/all
 
 # Include target in all.
@@ -791,7 +869,7 @@ clean: ibvs_asmc/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/clean
 ibvs_asmc/CMakeFiles/flag_node.dir/all:
 	$(MAKE) -f ibvs_asmc/CMakeFiles/flag_node.dir/build.make ibvs_asmc/CMakeFiles/flag_node.dir/depend
 	$(MAKE) -f ibvs_asmc/CMakeFiles/flag_node.dir/build.make ibvs_asmc/CMakeFiles/flag_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=11,12 "Built target flag_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=13,14 "Built target flag_node"
 .PHONY : ibvs_asmc/CMakeFiles/flag_node.dir/all
 
 # Include target in all.
@@ -1756,7 +1834,7 @@ clean: ibvs_asmc/CMakeFiles/trajectory_msgs_generate_messages_lisp.dir/clean
 ibvs_asmc/CMakeFiles/asmc_feat_node.dir/all:
 	$(MAKE) -f ibvs_asmc/CMakeFiles/asmc_feat_node.dir/build.make ibvs_asmc/CMakeFiles/asmc_feat_node.dir/depend
 	$(MAKE) -f ibvs_asmc/CMakeFiles/asmc_feat_node.dir/build.make ibvs_asmc/CMakeFiles/asmc_feat_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=5,6 "Built target asmc_feat_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/armando/visual_servoing_ws/build/CMakeFiles --progress-num=7,8 "Built target asmc_feat_node"
 .PHONY : ibvs_asmc/CMakeFiles/asmc_feat_node.dir/all
 
 # Include target in all.

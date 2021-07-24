@@ -1,0 +1,9 @@
+<launch>
+	
+	<!--node pkg="ibvs_asmc" type="cam_sim_node" name="camera_simulation_node" output="screen" /-->
+
+	
+	<node pkg="ibvs_asmc" type="gazebo_broadcasting" name="gazebo_broadcasting" />
+	<node pkg="ibvs_asmc" type="aruco_broadcasting" name="aruco_broadcasting" />
+
+</launch>

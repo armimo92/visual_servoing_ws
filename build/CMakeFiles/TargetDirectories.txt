@@ -31,6 +31,8 @@
 /home/armando/visual_servoing_ws/build/ibvs_asmc/CMakeFiles/rebuild_cache.dir
 /home/armando/visual_servoing_ws/build/ibvs_asmc/CMakeFiles/edit_cache.dir
 /home/armando/visual_servoing_ws/build/ibvs_asmc/CMakeFiles/cam_sim_node.dir
+/home/armando/visual_servoing_ws/build/ibvs_asmc/CMakeFiles/target_node.dir
+/home/armando/visual_servoing_ws/build/ibvs_asmc/CMakeFiles/aruco_broadcasting.dir
 /home/armando/visual_servoing_ws/build/ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir
 /home/armando/visual_servoing_ws/build/ibvs_asmc/CMakeFiles/IBVS_uav_dynamics_node.dir
 /home/armando/visual_servoing_ws/build/ibvs_asmc/CMakeFiles/IBVS_attitude_ctrl_node.dir

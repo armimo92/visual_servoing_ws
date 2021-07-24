@@ -50,8 +50,14 @@ target_link_libraries(IBVS_uav_dynamics_node ${catkin_LIBRARIES})
 add_executable(gazebo_broadcasting src/quad_gazebo_broadcaster.cpp)
 target_link_libraries(gazebo_broadcasting ${catkin_LIBRARIES})
 
+add_executable(aruco_broadcasting src/aruco_gazebo_broadcaster.cpp)
+target_link_libraries(aruco_broadcasting ${catkin_LIBRARIES})
+
 add_executable(flag_node src/Flag.cpp)
 target_link_libraries(flag_node ${catkin_LIBRARIES})
+
+add_executable(target_node src/tgt_pos.cpp)
+target_link_libraries(target_node ${catkin_LIBRARIES})
 
 add_executable(cam_sim_node src/camera_sim.cpp)
 target_link_libraries(cam_sim_node ${catkin_LIBRARIES})

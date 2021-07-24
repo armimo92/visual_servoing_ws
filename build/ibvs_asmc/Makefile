@@ -181,6 +181,36 @@ cam_sim_node/fast:
 .PHONY : cam_sim_node/fast
 
 # Convenience name for target.
+ibvs_asmc/CMakeFiles/target_node.dir/rule:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ibvs_asmc/CMakeFiles/target_node.dir/rule
+.PHONY : ibvs_asmc/CMakeFiles/target_node.dir/rule
+
+# Convenience name for target.
+target_node: ibvs_asmc/CMakeFiles/target_node.dir/rule
+
+.PHONY : target_node
+
+# fast build rule for target.
+target_node/fast:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/target_node.dir/build.make ibvs_asmc/CMakeFiles/target_node.dir/build
+.PHONY : target_node/fast
+
+# Convenience name for target.
+ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/rule:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/rule
+.PHONY : ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/rule
+
+# Convenience name for target.
+aruco_broadcasting: ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/rule
+
+.PHONY : aruco_broadcasting
+
+# fast build rule for target.
+aruco_broadcasting/fast:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build
+.PHONY : aruco_broadcasting/fast
+
+# Convenience name for target.
 ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/rule:
 	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/rule
 .PHONY : ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/rule
@@ -1122,6 +1152,33 @@ src/Flag.cpp.s:
 	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/flag_node.dir/build.make ibvs_asmc/CMakeFiles/flag_node.dir/src/Flag.cpp.s
 .PHONY : src/Flag.cpp.s
 
+src/aruco_gazebo_broadcaster.o: src/aruco_gazebo_broadcaster.cpp.o
+
+.PHONY : src/aruco_gazebo_broadcaster.o
+
+# target to build an object file
+src/aruco_gazebo_broadcaster.cpp.o:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/src/aruco_gazebo_broadcaster.cpp.o
+.PHONY : src/aruco_gazebo_broadcaster.cpp.o
+
+src/aruco_gazebo_broadcaster.i: src/aruco_gazebo_broadcaster.cpp.i
+
+.PHONY : src/aruco_gazebo_broadcaster.i
+
+# target to preprocess a source file
+src/aruco_gazebo_broadcaster.cpp.i:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/src/aruco_gazebo_broadcaster.cpp.i
+.PHONY : src/aruco_gazebo_broadcaster.cpp.i
+
+src/aruco_gazebo_broadcaster.s: src/aruco_gazebo_broadcaster.cpp.s
+
+.PHONY : src/aruco_gazebo_broadcaster.s
+
+# target to generate assembly for a file
+src/aruco_gazebo_broadcaster.cpp.s:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/src/aruco_gazebo_broadcaster.cpp.s
+.PHONY : src/aruco_gazebo_broadcaster.cpp.s
+
 src/asmc_feat.o: src/asmc_feat.cpp.o
 
 .PHONY : src/asmc_feat.o
@@ -1257,6 +1314,33 @@ src/quad_gazebo_broadcaster.cpp.s:
 	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/src/quad_gazebo_broadcaster.cpp.s
 .PHONY : src/quad_gazebo_broadcaster.cpp.s
 
+src/tgt_pos.o: src/tgt_pos.cpp.o
+
+.PHONY : src/tgt_pos.o
+
+# target to build an object file
+src/tgt_pos.cpp.o:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/target_node.dir/build.make ibvs_asmc/CMakeFiles/target_node.dir/src/tgt_pos.cpp.o
+.PHONY : src/tgt_pos.cpp.o
+
+src/tgt_pos.i: src/tgt_pos.cpp.i
+
+.PHONY : src/tgt_pos.i
+
+# target to preprocess a source file
+src/tgt_pos.cpp.i:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/target_node.dir/build.make ibvs_asmc/CMakeFiles/target_node.dir/src/tgt_pos.cpp.i
+.PHONY : src/tgt_pos.cpp.i
+
+src/tgt_pos.s: src/tgt_pos.cpp.s
+
+.PHONY : src/tgt_pos.s
+
+# target to generate assembly for a file
+src/tgt_pos.cpp.s:
+	cd /home/armando/visual_servoing_ws/build && $(MAKE) -f ibvs_asmc/CMakeFiles/target_node.dir/build.make ibvs_asmc/CMakeFiles/target_node.dir/src/tgt_pos.cpp.s
+.PHONY : src/tgt_pos.cpp.s
+
 src/uav_dynamics_ibvs.o: src/uav_dynamics_ibvs.cpp.o
 
 .PHONY : src/uav_dynamics_ibvs.o
@@ -1293,6 +1377,8 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... cam_sim_node"
+	@echo "... target_node"
+	@echo "... aruco_broadcasting"
 	@echo "... gazebo_broadcasting"
 	@echo "... IBVS_uav_dynamics_node"
 	@echo "... IBVS_attitude_ctrl_node"
@@ -1362,6 +1448,9 @@ help:
 	@echo "... src/Flag.o"
 	@echo "... src/Flag.i"
 	@echo "... src/Flag.s"
+	@echo "... src/aruco_gazebo_broadcaster.o"
+	@echo "... src/aruco_gazebo_broadcaster.i"
+	@echo "... src/aruco_gazebo_broadcaster.s"
 	@echo "... src/asmc_feat.o"
 	@echo "... src/asmc_feat.i"
 	@echo "... src/asmc_feat.s"
@@ -1377,6 +1466,9 @@ help:
 	@echo "... src/quad_gazebo_broadcaster.o"
 	@echo "... src/quad_gazebo_broadcaster.i"
 	@echo "... src/quad_gazebo_broadcaster.s"
+	@echo "... src/tgt_pos.o"
+	@echo "... src/tgt_pos.i"
+	@echo "... src/tgt_pos.s"
 	@echo "... src/uav_dynamics_ibvs.o"
 	@echo "... src/uav_dynamics_ibvs.i"
 	@echo "... src/uav_dynamics_ibvs.s"

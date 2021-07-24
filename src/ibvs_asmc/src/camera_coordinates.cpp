@@ -80,7 +80,9 @@ float qz;
 float qpsi;
 
 float a;
-float aD = 9.80e-9;
+float aD = 4.09e-9;
+
+float siono;
 
 Eigen::RowVector3f Row_e3;
 
@@ -132,19 +134,29 @@ int main(int argc, char *argv[])
 
 	ros::NodeHandle nh;
 	
-	ros::Rate loop_rate(30);	
+	ros::Rate loop_rate(50);	
 	
 	image_transport::ImageTransport it(nh);
 	
-	image_transport::Subscriber sub = it.subscribe("/quad/camera/image_raw", 30, imageCallback);
+	image_transport::Subscriber sub = it.subscribe("/quad/camera/image_raw", 100, imageCallback);
 	
 	ros::Subscriber attitude_sub = nh.subscribe("uav_attitude",100, &attitude_callback);
 	
 	geometry_msgs::Vector3 vector_q;
 	std_msgs::Float64 Feat_qpsi;
+	std_msgs::Float64 hay_imagen_o_no;
+	geometry_msgs::Pose2D punto1_vis;
+	geometry_msgs::Pose2D punto2_vis;
+	geometry_msgs::Pose2D punto3_vis;
+	geometry_msgs::Pose2D punto4_vis;
 	
 	ros::Publisher q_pub = nh.advertise<geometry_msgs::Vector3>("q_linear",100);
 	ros::Publisher qpsi_pub = nh.advertise<std_msgs::Float64>("q_psi",100);
+	ros::Publisher hay_imagen_pub = nh.advertise<std_msgs::Float64>("hay_imagen",100);
+	ros::Publisher p1_pub = nh.advertise<geometry_msgs::Pose2D>("punto1",100);
+	ros::Publisher p2_pub = nh.advertise<geometry_msgs::Pose2D>("punto2",100);
+	ros::Publisher p3_pub = nh.advertise<geometry_msgs::Pose2D>("punto3",100);
+	ros::Publisher p4_pub = nh.advertise<geometry_msgs::Pose2D>("punto4",100);
 	
 	cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_7X7_50);
 	
@@ -172,16 +184,8 @@ int main(int argc, char *argv[])
 		if (markerCorners.empty())
 		{
 			std::cout << "No hay marca" << std::endl;
-			/*
-			vector_q.x = 0;
-			vector_q.y = 0;
-			vector_q.z = 1;
-			
-			Feat_qpsi.data = 0;			
-						
-			q_pub.publish(vector_q);
-			qpsi_pub.publish(Feat_qpsi);
-			*/
+					
+	
 		}
 		else
 		{
@@ -245,34 +249,56 @@ int main(int argc, char *argv[])
 			ng = (p1_vs_vf(1) + p2_vs_vf(1) + p3_vs_vf(1) + p4_vs_vf(1)) / 4;
 			
 			//Momentos centrados
-			mu20 = pow((p1_vs_vf(0) - ug), 2) +  pow((p2_vs_vf(0) - ug), 2) +  pow((p3_vs_vf(0) - ug), 2) +  pow((p4_vs_vf(0) - ug), 2);
-			mu02 = pow((p1_vs_vf(1) - ng), 2) +  pow((p2_vs_vf(1) - ng), 2) +  pow((p3_vs_vf(1) - ng), 2) +  pow((p4_vs_vf(1) - ng), 2);
+			mu20 = powf((p1_vs_vf(0) - ug), 2) +  powf((p2_vs_vf(0) - ug), 2) +  powf((p3_vs_vf(0) - ug), 2) +  powf((p4_vs_vf(0) - ug), 2);
+			mu02 = powf((p1_vs_vf(1) - ng), 2) +  powf((p2_vs_vf(1) - ng), 2) +  powf((p3_vs_vf(1) - ng), 2) +  powf((p4_vs_vf(1) - ng), 2);
 			mu11 = (p1_vs_vf(0) - ug) * (p1_vs_vf(1) - ng) + (p2_vs_vf(0) - ug) * (p2_vs_vf(1) - ng) + (p3_vs_vf(0) - ug) * (p3_vs_vf(1) - ng) + (p4_vs_vf(0) - ug) * (p4_vs_vf(1) - ng);
 			resta = mu20-mu02;
-			if(resta == 0)
+			if(resta == 0 || std::abs(resta) < 8e-11)
 			{
-				resta = 1e-8;
+				resta = 1;
 			}	
-			
+				
+			if(std::abs(mu11) < 1e-10)
+			{
+				mu11 = 0;
+			}
 			
 			//Vector de características q
 			a = mu20 + mu02;
 			qz = sqrt(aD/a);
-			qx = qz * ug/focal_length;
-			qy = qz * ng/focal_length;
-			qpsi = (1/2) * atan((2*mu11)/resta);
-
+			qx = qz * ng/focal_length;
+			qy = qz * ug/focal_length;
+			qpsi = 0.5 * atanf((2*mu11)/resta);
+			
+			
 			vector_q.x = qx;
 			vector_q.y = qy;
 			vector_q.z = qz;
 			
 			Feat_qpsi.data = qpsi;		
 			
-	
+			punto1_vis.x = p1_vs_vf(0);
+			punto1_vis.y = p1_vs_vf(1);
+			
+			punto2_vis.x = p2_vs_vf(0);
+			punto2_vis.y = p2_vs_vf(1);
+			
+			punto3_vis.x = p3_vs_vf(0);
+			punto3_vis.y = p3_vs_vf(1);
+			
+			punto4_vis.x = p4_vs_vf(0);
+			punto4_vis.y = p4_vs_vf(1);
+			
+			p1_pub.publish(punto1_vis);
+			p2_pub.publish(punto2_vis);
+			p3_pub.publish(punto3_vis);
+			p4_pub.publish(punto4_vis);
+			
+			
 						
 			q_pub.publish(vector_q);
 			qpsi_pub.publish(Feat_qpsi);
-			
+	
 			
 			std::cout << "p1: " << p1_vs_vf(0) << ", " << p1_vs_vf(1) << std::endl;
 			std::cout << "p2: " << p2_vs_vf(0) << ", " << p2_vs_vf(1) << std::endl;
@@ -283,7 +309,7 @@ int main(int argc, char *argv[])
 			std::cout << "mu20: " << mu20 << std::endl;
 			std::cout << "mu02: " << mu02 << std::endl;
 			std::cout << "mu11: " << mu11 << std::endl;
-			std::cout << "a: " << a << std::endl;
+			std::cout << "resta: " << resta << std::endl;
 			std::cout << "qx: " << qx << std::endl;
 			std::cout << "qy: " << qy << std::endl;
 			std::cout << "qz: " << qz << std::endl;

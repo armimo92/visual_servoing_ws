@@ -296,6 +296,32 @@ cam_sim_node/fast:
 .PHONY : cam_sim_node/fast
 
 #=============================================================================
+# Target rules for targets named target_node
+
+# Build rule for target.
+target_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 target_node
+.PHONY : target_node
+
+# fast build rule for target.
+target_node/fast:
+	$(MAKE) -f ibvs_asmc/CMakeFiles/target_node.dir/build.make ibvs_asmc/CMakeFiles/target_node.dir/build
+.PHONY : target_node/fast
+
+#=============================================================================
+# Target rules for targets named aruco_broadcasting
+
+# Build rule for target.
+aruco_broadcasting: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 aruco_broadcasting
+.PHONY : aruco_broadcasting
+
+# fast build rule for target.
+aruco_broadcasting/fast:
+	$(MAKE) -f ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build.make ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/build
+.PHONY : aruco_broadcasting/fast
+
+#=============================================================================
 # Target rules for targets named gazebo_broadcasting
 
 # Build rule for target.
@@ -1111,6 +1137,8 @@ help:
 	@echo "... gtest"
 	@echo "... gtest_main"
 	@echo "... cam_sim_node"
+	@echo "... target_node"
+	@echo "... aruco_broadcasting"
 	@echo "... gazebo_broadcasting"
 	@echo "... IBVS_uav_dynamics_node"
 	@echo "... IBVS_attitude_ctrl_node"

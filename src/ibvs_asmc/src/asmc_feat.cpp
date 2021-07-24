@@ -36,11 +36,12 @@ Eigen::Vector4f uav_vel_vs;
 float uav_psi_vel;
 float uav_roll;
 float uav_pitch;
-float zD = 2;
+float uav_yaw;
+float zD = 2.0;
 
 Eigen::Vector4f uav_vel_vf;
 Eigen::Vector3f tgt_linear_vel;
-float tgt_psi_vel = 0;
+float tgt_psi_vel = 0.0;//-0.04*3.141592;
 
 Eigen::Vector4f kappa;
 Eigen::Matrix4f M;
@@ -56,7 +57,7 @@ Eigen::Vector4f k;
 Eigen::Vector4f kmin;
 Eigen::Vector4f mu;
 
-float step = 0.0333;
+float step = 0.02;
 Eigen::Vector4f asmc;
 
 Eigen::Vector4f image_filter;
@@ -80,16 +81,15 @@ float phi_des;
 float theta_des;
 float phi_des_arg;
 float theta_des_arg;
-float psi_des = 0; 
-
+float psi_des = 0.0; 
 float bandera;
 
 float abs_arg;
 
 void qfeatCallback(const geometry_msgs::Vector3::ConstPtr& qfeat)
 {
-	q(0) = qfeat->x;
-	q(1) = qfeat->y;
+	q(0) = -qfeat->x;
+	q(1) = -qfeat->y;
 	q(2) = qfeat->z;
 	
 }
@@ -116,6 +116,7 @@ void attitude_callback(const geometry_msgs::Vector3::ConstPtr& att)
 {
 	uav_roll = att->x;
 	uav_pitch = att->y;	
+	uav_yaw = att->z;
 }
 
 void FlagCallback(const std_msgs::Float64::ConstPtr& fl)
@@ -181,7 +182,7 @@ int main(int argc, char *argv[])
 {	
 	ros::init(argc, argv, "asmc_feat");
 	ros::NodeHandle nh;
-	ros::Rate loop_rate(30);
+	ros::Rate loop_rate(50);
 	
 	ros::Subscriber q_sub = nh.subscribe("q_linear",100, &qfeatCallback);
 	ros::Subscriber qpsi_sub = nh.subscribe("q_psi",100, &qpsiCallback);	
@@ -198,6 +199,15 @@ int main(int argc, char *argv[])
 	geometry_msgs::Vector3 xi_xyz;
 	geometry_msgs::Vector3 fuerzas_virtuales;
 	geometry_msgs::Vector3 sigmas;
+	geometry_msgs::Vector3 virtual_velocity;
+	geometry_msgs::Vector3 error_vs;
+	geometry_msgs::Vector3 error_dot_vs;
+	geometry_msgs::Vector3 asmc_data;
+	std_msgs::Float64 K1_yaw;
+	std_msgs::Float64 sigma_yaw;
+	std_msgs::Float64 xi_yaw;
+	std_msgs::Float64 asmc_yaw;
+	std_msgs::Float64 error_yaw;
 	
 	ros::Publisher att_des_pub = nh.advertise<geometry_msgs::Vector3>("Desired_attitude_ibvs",100);
 	ros::Publisher thrust_pub = nh.advertise<geometry_msgs::Vector3>("Thrust_and_des_att",100);
@@ -206,17 +216,28 @@ int main(int argc, char *argv[])
 	ros::Publisher xi_xyz_pub = nh.advertise<geometry_msgs::Vector3>("Ctrl_law_linear",100);
 	ros::Publisher fvir_pub = nh.advertise<geometry_msgs::Vector3>("Fuerzas_virtuales",100);
 	ros::Publisher sigmas_pub = nh.advertise<geometry_msgs::Vector3>("sigmas",100);
+	ros::Publisher vir_vels_pub = nh.advertise<geometry_msgs::Vector3>("virtual_velocity",100);
+	ros::Publisher error_pub = nh.advertise<geometry_msgs::Vector3>("error",100);
+	ros::Publisher error_dot_pub = nh.advertise<geometry_msgs::Vector3>("error_punto",100);
+	ros::Publisher asmc_pub = nh.advertise<geometry_msgs::Vector3>("asmc_data",100);
+	ros::Publisher K1yaw_pub = nh.advertise<std_msgs::Float64>("K1_yaw",100);
+	ros::Publisher sigmayaw_pub = nh.advertise<std_msgs::Float64>("sigma_yaw",100);
+	ros::Publisher xiyaw_pub = nh.advertise<std_msgs::Float64>("xi_yaw",100);
+	ros::Publisher asmcyaw_pub = nh.advertise<std_msgs::Float64>("asmc_yaw",100);
+	ros::Publisher erroryaw_pub = nh.advertise<std_msgs::Float64>("error_yaw",100);
 	
-	lambda << 1,1,4,1;
+	lambda << 2.5,2.5,0.5,1.0;
 	K1 << 0,0,0,0;
 	K1_dot << 0,0,0,0;
-	K2 << 1,1,1,0.1;
-	k << 0.3,0.3,1,1;
+	K2 << 0.001,0.001,1.0,1.0;
+	k << 0.2,0.2,0.3,0.8;
 	kmin << 0.01,0.01,0.01,0.01;
-	mu << 0.01,0.01,0.1,0.2;
+	mu << 0.01,0.01,0.01,0.1;
 	asmc << 0,0,0,0;
 	sigma << 0,0,0,0;
-	e3 << 0,0,1;
+	e3 << 0,0,1.0;
+	
+	
 	
 	lambda_matrix << lambda(0),0,0,0,
 									 0,lambda(1),0,0,
@@ -224,7 +245,7 @@ int main(int argc, char *argv[])
 									 0,0,0,lambda(3);		
 	qD << 0,0,1,0;
 	uav_vel_vf << 0,0,0,0;
-	tgt_linear_vel << 0,0,0;
+	tgt_linear_vel << 0,0,0;//0.377,0,0;
 	
 	delta << 0,0,0,0;
 	xi << 0,0,0,0;
@@ -234,7 +255,7 @@ int main(int argc, char *argv[])
 	image_filter_dot << 0,0,0,0;
 	rho << 0,0,0,0;
 	 
-	ros::Duration(6.1).sleep();
+	ros::Duration(1.1).sleep();
 	
 	while(ros::ok())
 	{
@@ -246,17 +267,17 @@ int main(int argc, char *argv[])
 		
 			qlinear << q(0), q(1), q(2);
 			uav_linear_vel_VF = Rtp(uav_roll, uav_pitch) * uav_linear_vel_BF;
-			uav_vel_vs << uav_linear_vel_VF(0), uav_linear_vel_VF(1), uav_linear_vel_VF(2), uav_psi_vel;
+			uav_vel_vs << uav_linear_vel_VF(0), uav_linear_vel_VF(1), uav_linear_vel_VF(2), xi(3);
 		
 			psi_e3 << 0, 0, uav_psi_vel;
 		
-			qlinear_dot = -1*skewMatrix(psi_e3) * qlinear - (1/zD) * uav_linear_vel_VF + (1/zD) * 	tgt_linear_vel;
+			qlinear_dot = -1*skewMatrix(psi_e3) * qlinear - (1/zD) * uav_linear_vel_VF + (1/zD) * tgt_linear_vel;
 		
 		
-			M << (-1/zD), 0, 0, q(1),
-				 0, (-1/zD), 0, -q(0),
-				 0, 0, (-1/zD), 0,
-				 0, 0, 0, -1;
+			M << (-1.0/zD), 0, 0, q(1),
+				 0, (-1.0/zD), 0, -q(0),
+				 0, 0, (-1.0/zD), 0,
+				 0, 0, 0, -1.0;
 				  
 			M_dot << 0, 0, 0, qlinear_dot(1),
 						 0, 0, 0, -qlinear_dot(0),
@@ -267,18 +288,21 @@ int main(int argc, char *argv[])
 		
 			kappa << (1/zD) * tgt_linear_vel(0), (1/zD) * tgt_linear_vel(1), (1/zD) * tgt_linear_vel(2), tgt_psi_vel;
 		
-			error_dot = M * xi + kappa;
+			error_dot = M * uav_vel_vs + kappa;
+			
 		
 			//ASMC
-			sigma(0) = lambda(0) * error(0) + error_dot(0);
-			sigma(1) = lambda(1) * error(1) + error_dot(1);
-			sigma(2) = lambda(2) * error(2) + error_dot(2);
-			sigma(3) = lambda(3) * error(3) + error_dot(3);
+			sigma(0) = (lambda(0) * error(0)) + error_dot(0);
+			sigma(1) = (lambda(1) * error(1)) + error_dot(1);
+			sigma(2) = (lambda(2) * error(2)) + error_dot(2);
+			sigma(3) = (lambda(3) * error(3)) + error_dot(3);
+
+			
 		
 			if(K1(0) > kmin(0))
 			{
-				abs_arg = std::abs(sigma(0))-mu(0);
-				K1_dot(0) = k(0) * sign(abs_arg);
+			
+				K1_dot(0) = k(0) * sign(std::abs(sigma(0))-mu(0));
 			}	
 			else
 			{
@@ -287,8 +311,7 @@ int main(int argc, char *argv[])
 			
 			if(K1(1) > kmin(1))
 			{
-				abs_arg = std::abs(sigma(1))-mu(1);
-				K1_dot(1) = k(1) * sign(abs_arg);
+				K1_dot(1) = k(1) * sign(std::abs(sigma(1))-mu(1));
 			}	
 			else
 			{
@@ -297,8 +320,7 @@ int main(int argc, char *argv[])
 			
 			if(K1(2) > kmin(2))
 			{
-				abs_arg = std::abs(sigma(2))-mu(2);
-				K1_dot(2) = k(2) * sign(abs_arg);
+				K1_dot(2) = k(2) * sign(std::abs(sigma(2))-mu(2));
 			}	
 			else
 			{
@@ -307,8 +329,7 @@ int main(int argc, char *argv[])
 			
 			if(K1(3) > kmin(3))
 			{
-				abs_arg = std::abs(sigma(3))-mu(3);
-				K1_dot(3) = k(3) * sign(abs_arg);
+				K1_dot(3) = k(3) * sign(std::abs(sigma(3))-mu(3));
 			}	
 			else
 			{
@@ -316,10 +337,10 @@ int main(int argc, char *argv[])
 			}
 			
 			
-			K1(0) = K1(0) + step * K1_dot(0); //New value of K1
-			K1(1) = K1(1) + step * K1_dot(1); //New value of K1
-			K1(2) = K1(2) + step * K1_dot(2); //New value of K1
-			K1(3) = K1(3) + step * K1_dot(3); //New value of K1
+			K1(0) = K1(0) + step * K1_dot(0); //New value of K1x
+			K1(1) = K1(1) + step * K1_dot(1); //New value of K1y
+			K1(2) = K1(2) + step * K1_dot(2); //New value of K1z
+			K1(3) = K1(3) + step * K1_dot(3); //New value of K1psi
 			
 		
 			asmc(0) = -K1(0) * sqrt(std::abs(sigma(0))) * sign(sigma(0)) - K2(0) * sigma(0);
@@ -402,6 +423,7 @@ int main(int argc, char *argv[])
 				theta_des = -0.5;
 			}
 			
+			
 			psi_des = psi_des + step * xi(3);
 		
 		
@@ -410,10 +432,10 @@ int main(int argc, char *argv[])
 			uav_att_des.y = theta_des;
 			uav_att_des.z = psi_des;
 		
-			psi_vel_des.data = xi(3);
+			psi_vel_des.data = 0;//xi(3);
 			thrust.x = U1;
 			
-			K1xyz.x = K1(3);
+			K1xyz.x = K1(0);
 			K1xyz.y = K1(1);
 			K1xyz.z = K1(2);
 			
@@ -429,6 +451,28 @@ int main(int argc, char *argv[])
 			sigmas.y = sigma(1);
 			sigmas.z = sigma(2);
 			
+			virtual_velocity.x = uav_vel_vs(0);
+			virtual_velocity.y = uav_vel_vs(1);
+			virtual_velocity.z = uav_vel_vs(2);
+			
+			error_vs.x = error(0);
+			error_vs.y = error(1);
+			error_vs.z = error(2);
+			
+			error_dot_vs.x = error_dot(0);
+			error_dot_vs.y = error_dot(1);
+			error_dot_vs.z = error_dot(2);
+			
+			asmc_data.x = asmc(0);
+			asmc_data.y = asmc(1);
+			asmc_data.z = asmc(2);
+			
+			K1_yaw.data = K1(3);
+			sigma_yaw.data = sigma(3);
+			xi_yaw.data = xi(3);
+			asmc_yaw.data = asmc(3);
+			error_yaw.data = error(3);
+			
 			att_des_pub.publish(uav_att_des);
 			thrust_pub.publish(thrust);
 			psi_vel_des_pub.publish(psi_vel_des);
@@ -436,13 +480,17 @@ int main(int argc, char *argv[])
 			xi_xyz_pub.publish(xi_xyz);
 			fvir_pub.publish(fuerzas_virtuales);
 			sigmas_pub.publish(sigmas);
-		
-		
-			std::cout << std::abs(sigma(2)) << std::endl;
-			//std::cout << "x: " << K1(0) << std::endl;
-			//std::cout << "y: " << K1(1) << std::endl;
-			//std::cout << "z: " << K1(2) << std::endl;
-			//std::cout << "psi: " << K1(3) << std::endl;
+			vir_vels_pub.publish(virtual_velocity);
+			error_pub.publish(error_vs);
+			error_dot_pub.publish(error_dot_vs);
+			asmc_pub.publish(asmc_data);
+			
+			K1yaw_pub.publish(K1_yaw);
+			sigmayaw_pub.publish(sigma_yaw);
+			xiyaw_pub.publish(xi_yaw);
+			asmcyaw_pub.publish(asmc_yaw);
+			erroryaw_pub.publish(error_yaw);
+			
 			//std::cout << "phi_arg: " << phi_des_arg << std::endl;
 			//std::cout << "theta_arg: " << theta_des_arg << std::endl;
 			//std::cout << "phi: " << phi_des << std::endl;
@@ -450,12 +498,7 @@ int main(int argc, char *argv[])
 			//std::cout << "phi_des: " << phi_des << std::endl;
 			//std::cout << "theta_des: " << theta_des << std::endl;		
 			//std::cout << "psi_des: " << psi_des << std::endl;		
-		
-			
-			//std::cout << "  Sigma: " << std::endl;
-			//std::cout << "x: " << sigma(0) << std::endl;
-			//std::cout << "y: " << sigma(1) << std::endl;
-			//std::cout << "z: " << sigma(2) << std::endl;
+
 			
 			ros::spinOnce();
 			loop_rate.sleep();

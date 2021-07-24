@@ -29,7 +29,7 @@ Eigen::Vector3f linear_acceleration_BF;
 Eigen::Vector3f attitude_acceleration;
 
 Eigen::Vector3f tau;
-float U1;
+float U1 =m*g;
 Eigen::Vector3f force(0,0,0);
 
 Eigen::Vector3f e3(0,0,1);
@@ -108,8 +108,8 @@ int main(int argc, char **argv)
 		 0, 0.0478, 0,
 		 0, 0, 0.0599;
 	
-	linear_position << 1,1,-2.5;
-	attitude_position << 0,0,0;
+	linear_position << 0.2,0.2,-2.5;
+	attitude_position << 0,0,3.141592/4;
 
 	linear_velocity_BF << 0,0,0;
 	linear_velocity_IF << 0,0,0;
@@ -122,10 +122,17 @@ int main(int argc, char **argv)
 	positionVector.x = linear_position(0);
 	positionVector.y = linear_position(1);
 	positionVector.z = linear_position(2);
+	
+	attitudeVector.x = attitude_position(0);
+	attitudeVector.y = attitude_position(1);
+	attitudeVector.z = attitude_position(2);
+	
 	positionPub.publish(positionVector);
+	attitudePub.publish(attitudeVector);
 	ros::Duration(0.05).sleep();
 	positionPub.publish(positionVector);
-	ros::Duration(6).sleep();
+	attitudePub.publish(attitudeVector);
+	//ros::Duration(8).sleep();
 	
 	while(ros::ok())
 	{

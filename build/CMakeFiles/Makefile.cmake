@@ -252,6 +252,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "gtest/gtest/CMakeFiles/gtest.dir/DependInfo.cmake"
   "gtest/gtest/CMakeFiles/gtest_main.dir/DependInfo.cmake"
   "ibvs_asmc/CMakeFiles/cam_sim_node.dir/DependInfo.cmake"
+  "ibvs_asmc/CMakeFiles/target_node.dir/DependInfo.cmake"
+  "ibvs_asmc/CMakeFiles/aruco_broadcasting.dir/DependInfo.cmake"
   "ibvs_asmc/CMakeFiles/gazebo_broadcasting.dir/DependInfo.cmake"
   "ibvs_asmc/CMakeFiles/IBVS_uav_dynamics_node.dir/DependInfo.cmake"
   "ibvs_asmc/CMakeFiles/IBVS_attitude_ctrl_node.dir/DependInfo.cmake"

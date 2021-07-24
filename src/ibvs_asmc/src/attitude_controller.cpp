@@ -113,20 +113,25 @@ int main(int argc, char *argv[])
 	ros::Subscriber flag_sub = nh.subscribe("Flag_topic",100, &FlagCallback);
 	
 	geometry_msgs::Vector3 torques_ibvs;
-	ros::Publisher pub_torques = nh.advertise<geometry_msgs::Vector3>("Torques",100);
+	geometry_msgs::Vector3 Adaptive_gains_att;
+	geometry_msgs::Vector3 sigma_att;	
 	
-	lambda << 1,1,3; //lambda_phi lambda_theta lambda_psi
+	ros::Publisher pub_torques = nh.advertise<geometry_msgs::Vector3>("Torques",100);
+	ros::Publisher pub_K1_att = nh.advertise<geometry_msgs::Vector3>("K1_att",100);
+	ros::Publisher pub_sigma_att = nh.advertise<geometry_msgs::Vector3>("sigma_att",100);
+	
+	lambda << 2,2,2; //lambda_phi lambda_theta lambda_psi
 	K1 << 0,0,0; //K1_phi, K1_theta, K1_psi
 	K1_dot << 0,0,0; //K1_phi_dot K1_theta_dot K1_psi_dot
-	K2 << 1,1,1; //K2_phi, K2_theta, K2_psi
-	k << 0.5,0.5,0.1;	//kphi ktheta kpsi
-	kmin << 0.01,0.01,0.01; //kmin_phi kmin_theta, kmin_psi
+	K2 << 0.5,0.5,1; //K2_phi, K2_theta, K2_psi
+	k << 0.8,0.8,0.1;	//kphi ktheta kpsi
+	kmin << 0.5,0.5,0.01; //kmin_phi kmin_theta, kmin_psi
 	mu << 0.1,0.1,0.01; //mu_phi, mu_theta, mu_psi
 
 	attitude_vel_des(0) = 0;
 	attitude_vel_des(1) = 0;
-	
-	ros::Duration(6.1).sleep();
+
+	ros::Duration(1.1).sleep();
 	while(ros::ok())
 	{
 	
@@ -138,7 +143,7 @@ int main(int argc, char *argv[])
 			
 				if(K1(i) > kmin(i))	
 				{
-					K1_dot(i) = k(i) * sign(abs(sigma(i))-mu(i));
+					K1_dot(i) = k(i) * sign(std::abs(sigma(i))-mu(i));
 				}
 				else
 				{
@@ -148,19 +153,27 @@ int main(int argc, char *argv[])
 				K1(i) = K1(i) + step * K1_dot(i); //New value of K1
 			}
 		
-			tau(0) = -K1(0) * sqrt(abs(sigma(0))) * sign(sigma(0)) - K2(0) * sigma(0);
-			tau(1) = -K1(1) * sqrt(abs(sigma(1))) * sign(sigma(1)) - K2(1) * sigma(1);
-			tau(2) = -K1(2) * sqrt(abs(sigma(2))) * sign(sigma(2)) - K2(2) * sigma(2);
+			tau(0) = -K1(0) * sqrt(std::abs(sigma(0))) * sign(sigma(0)) - K2(0) * sigma(0);
+			tau(1) = -K1(1) * sqrt(std::abs(sigma(1))) * sign(sigma(1)) - K2(1) * sigma(1);
+			tau(2) = -K1(2) * sqrt(std::abs(sigma(2))) * sign(sigma(2)) - K2(2) * sigma(2);
 		
 			torques_ibvs.x = tau(0);
 			torques_ibvs.y = tau(1);
 			torques_ibvs.z = tau(2);
 		
+			Adaptive_gains_att.x = K1(0);
+			Adaptive_gains_att.y = K1(1);
+			Adaptive_gains_att.z = K1(2);
 			
-		
-		
+			sigma_att.x = sigma(0);
+			sigma_att.y = sigma(1);
+			sigma_att.z = sigma(2);	
+			
 			pub_torques.publish(torques_ibvs);
-		
+			pub_K1_att.publish(Adaptive_gains_att);
+			pub_sigma_att.publish(sigma_att);				
+			
+			
 			ros::spinOnce();
 			loop_rate.sleep();
 		
