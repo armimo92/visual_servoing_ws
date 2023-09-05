@@ -1,0 +1,19 @@
+<launch>
+	
+	<node pkg="fxteso_aibvs" type="quadrotor_dynamics_node" name="quadrotor_dynamics_node" />	
+	
+	<node pkg="fxteso_aibvs" type="img_feat_node" name="img_feat_node" output="screen"   />
+	
+	<node pkg="fxteso_aibvs" type="ibvs_controller_node" name="ibvs_controller_node"   />
+	
+	<node pkg="fxteso_aibvs" type="attitude_controller_node" name="attitude_controller_node"  />
+	
+	<node pkg="fxteso_aibvs" type="fixed_eso_node" name="fixed_eso_node"  />
+	
+	<node pkg="fxteso_aibvs" type="fixed_eso_node" name="fixed_eso_att_node"  />
+	
+	<node pkg="fxteso_aibvs" type="external_disturbances_node" name="external_disturbances_node"  />
+	
+	<node pkg="fxteso_aibvs" type="target_position_node" name="target_position_node"  />
+</launch>
+
